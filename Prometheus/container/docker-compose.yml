@@ -1,0 +1,30 @@
+version: "1.0"
+services:
+  prometheus:
+    build:
+      dockerfile: ./prometheus/Dockerfile
+      args:
+        PROMETHEUS_NODE_TYPE: master
+    image: alfredo.leon/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+       - ../data:/project
+    hostname: prometheus
+    networks:
+      - prometheus_sql_network
+    environment:
+      PROMETHEUS_NODE_TYPE: "master"
+  fintime:
+    build:
+      dockerfile: ./fintime/Dockerfile
+    image: alfredo.leon/fintime:latest
+    hostname: fintime
+    networks:
+      - prometheus_sql_network
+    volumes:
+      - ../data:/project
+    depends_on:
+      - prometheus
+networks:
+  prometheus_sql_network:
