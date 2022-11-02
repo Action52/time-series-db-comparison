@@ -1,0 +1,6 @@
+Id | Ex | Descr | SIC | Cu
+Security_0 | LN | 'Financial security number: 0' | PHARMACEUTICALS | JPY
+Security_1 | LN | 'Financial security number: 1' | COMPUTERS | FFR
+Security_2 | LN | 'Financial security number: 2' | INDUSTRIAL | USD
+Security_3 | AM | 'Financial security number: 3' | ENTERTAINMENT | FFR
+Security_4 | NY | 'Financial security number: 4' | CHEMICALS | USD
