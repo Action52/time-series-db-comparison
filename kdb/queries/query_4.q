@@ -1,0 +1,1 @@
+select [10;>TradeCumulative] TradeCumulative:sum(TradeSize) by Id from priceenum2 where TradeDate=2022.11.03
