@@ -1,2 +1,1 @@
-a: select  last AskPrice where not null AskPrice, last BidPrice where not null BidPrice by Id from priceenum2 where TradeDate=2022.11.03;
-select [10;>2*(AskPrice-BidPrice)%(AskPrice+BidPrice)] Id, Percentage_spread: 2*(AskPrice-BidPrice)%(AskPrice+BidPrice) from a
+0!select[10] from `Percentage_spread xdesc `Id`Percentage_spread xcol select Id, (2*(AskPrice-BidPrice)%(AskPrice+BidPrice)) from select last AskPrice where not null AskPrice, last BidPrice where not null BidPrice by Id from priceenum2 where TradeDate=2022.11.22

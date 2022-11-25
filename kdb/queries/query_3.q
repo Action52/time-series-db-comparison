@@ -1,4 +1,1 @@
-a: select TimeStamp:last TimeStamp where not null TradePrice, TradePrice: last TradePrice where not null TradePrice by Id from priceenum2 where TradeDate=2022.11.03
-b: select TimeStamp_final: last TimeStamp where not null TradePrice, TradePrice_final:last TradePrice where not null TradePrice by Id  from priceenum2 where TradeDate=2022.11.04
-c: a^b
-select [10;>(TradePrice_final-TradePrice)%TradePrice] Id, loss:(TradePrice_final-TradePrice)%TradePrice from c
+0!select[10] from `LossPercentage xasc `Id`LossPercentage xcol select Id, (ClosingPriceToday-ClosingPricePreviousDay)*100%ClosingPricePreviousDay from(`Id`ClosingPriceToday`ClosingPricePreviousDay xcol ((`Id`ClosingPriceToday xcol select first TradePrice by Id from (`TimeStamp xdesc select Id, TradePrice, TimeStamp from priceenum2 where TradeDate=2022.11.22, TradePrice>0.0)) ij (`Id`ClosingPricePreviousDay xcol select first TradePrice by Id from (`TimeStamp xdesc select Id, TradePrice, TimeStamp from priceenum2 where TradeDate=2022.11.23, TradePrice>0.0))))

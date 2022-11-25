@@ -1,0 +1,1 @@
+0!select sum(TradePrice * TradeSize) % sum(TradeSize) from priceenum2 where Id=`Security_1, TradeDate=2022.11.21, TimeStamp within 09:00:00.00 12:00:00.00

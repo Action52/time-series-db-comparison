@@ -1,2 +1,1 @@
-complete: ej[`Id;baseenum2;priceenum2];
-select [1;>TradeCumulative] TradeCumulative:count 1 by Id from complete where SIC like "COMPUTERS"
+0!select[10] from `TicksCount xdesc `Id`TicksCount xcol select sum TradeSize by Id from (ej[`Id;select from baseenum where SIC like "COMPUTERS"; tickenum])
