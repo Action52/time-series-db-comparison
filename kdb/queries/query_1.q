@@ -1,0 +1,1 @@
+0!select from priceenum2 where Id in securities, TradeDate=2022.11.21, TimeStamp within 09:00:00.00 12:00:00.00

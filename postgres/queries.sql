@@ -37,32 +37,33 @@ ORDER BY loss_percentage
 LIMIT 10;
 
 --4.
-select Id, sum(TradeSize) TradeCumulative
+select Id, sum(TradeSize) TradeSize
 from ticks
-where TradeDate = '2022.11.03'
+where TradeDate = '2022.11.23'
 group by Id
 order by sum(TradeSize) DESC
 limit 10;
 
 --5.
-select B.id, count(*) TradeCumulative
+select B.id, sum(TradeSize) TicksCount
 from ticks T inner join base B on(T.id= B.id)
 where B.sic= 'COMPUTERS'
 group by B.id
-order by count(*) DESC
-limit 1;
+order by sum(TradeSize) DESC
+limit 10;
 
 --6.
 WITH
 LAStB (id, bidprice, lASttime) AS
 (SELECT id, bidprice, ROW_NUMBER() OVER 
-(PARTITION BY id ORDER BY tradedate,Ts DESC) AS rown FROM ticks WHERE bidprice is not null),
-LAStA (id,ASkprice, lASttime) AS (SELECT id, ASkprice, ROW_NUMBER() OVER 
-(PARTITION BY id ORDER BY tradedate,Ts DESC) rown FROM ticks WHERE ASkprice is not null),
-allids (id, rank) AS
-(SELECT a.id, rank() OVER (ORDER BY (2*(b.ASkprice-a.bidprice) / (b.ASkprice+a.bidprice)) DESC)
+(PARTITION BY id ORDER BY tradedate,Ts DESC) AS rown FROM ticks WHERE bidprice is not null AND TradeDate = '2022.11.22'),
+LAStA (id,ASkprice, lASttime) AS (SELECT id, ASkprice, ROW_NUMBER() OVER
+(PARTITION BY id ORDER BY tradedate,Ts DESC) rown FROM ticks WHERE ASkprice is not null AND TradeDate = '2022.11.22'),
+allids (id, Percentage_spread, rank) AS
+(SELECT a.id, 2*(b.ASkprice-a.bidprice) / (b.ASkprice+a.bidprice) Percentage_spread,
+        rank() OVER (ORDER BY (2*(b.ASkprice-a.bidprice) / (b.ASkprice+a.bidprice)) DESC)
 FROM LAStB a, LAStA b
 WHERE a.id=b.id AND a.lASttime=1 AND b.lASttime=1)
-SELECT id
+SELECT id, Percentage_spread
 FROM allids
 WHERE rank < 11;

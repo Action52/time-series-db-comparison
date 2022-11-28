@@ -1,1 +1,1 @@
-select [10;>TradeCumulative] TradeCumulative:sum(TradeSize) by Id from priceenum2 where TradeDate=2022.11.03
+0!select[10] from `TradeSize xdesc select from select sum(TradeSize) by Id from priceenum2 where TradeDate=2022.11.23
