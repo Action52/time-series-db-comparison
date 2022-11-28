@@ -1,0 +1,84 @@
+version: "3.3"
+
+services:
+  spark-master:
+    build:
+      dockerfile: ./spark-image/Dockerfile
+      network: host
+      args:
+        SPARK_NODE_TYPE: master
+    image: alfredo.leon/spark:latest
+    ports:
+      - 8080:8080
+      - 7077:7077
+    volumes:
+      - data_vol_shared:/data_vol_shared
+      - queries_vol_shared:/queries_vol_shared
+    hostname: spark-master
+    networks:
+      - spark_sql_network
+    environment:
+      SPARK_NODE_TYPE: "master"
+    mem_limit: 2048M
+  spark-worker-a:
+    build:
+      dockerfile: ./spark-image/Dockerfile
+      network: host
+      args:
+        SPARK_NODE_TYPE: worker
+    image: alfredo.leon/spark:latest
+    depends_on:
+      - spark-master
+    hostname: spark-worker-a
+    networks:
+      - spark_sql_network
+    volumes:
+      - data_vol_shared:/data_vol_shared
+      - queries_vol_shared:/queries_vol_shared
+    environment:
+      SPARK_NODE_TYPE: "worker"
+    mem_limit: 1024M
+  spark-worker-b:
+    build:
+      dockerfile: ./spark-image/Dockerfile
+      network: host
+      args:
+        SPARK_NODE_TYPE: worker
+    image: alfredo.leon/spark:latest
+    depends_on:
+      - spark-master
+    hostname: spark-worker-a
+    networks:
+      - spark_sql_network
+    volumes:
+      - data_vol_shared:/data_vol_shared
+      - queries_vol_shared:/queries_vol_shared
+    environment:
+      SPARK_NODE_TYPE: "worker"
+    mem_limit: 1024M
+  tpcds:
+    build:
+      dockerfile: ./tpcds-image/Dockerfile
+      network: host
+    image: alfredo.leon/tpcds:latest
+    hostname: spark-driver
+    networks:
+      - spark_sql_network
+    volumes:
+      - data_vol_shared:/data_vol_shared
+      - queries_vol_shared:/queries_vol_shared
+      - ../scripts:/scripts
+    depends_on:
+      - spark-master
+      - spark-worker-a
+      - spark-worker-b
+    stdin_open: true
+    tty: true
+    mem_limit: 2048M
+
+volumes:
+  data_vol_shared:
+  queries_vol_shared:
+
+networks:
+  spark_sql_network:

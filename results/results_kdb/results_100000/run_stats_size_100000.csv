@@ -1,0 +1,7 @@
+run_id,query_id,start_time,end_time,elapsed_time,row_count,error
+100000_single_user_./queries/query_4.q,1,1669323569.9807,1669323581.666,11.6853,10,False
+100000_single_user_./queries/query_3.q,2,1669323582.2999,1669323591.3968,9.0969,10,False
+100000_single_user_./queries/query_2.q,3,1669323591.5006,1669323596.2149,4.7143,1,False
+100000_single_user_./queries/query_6.q,4,1669323596.2217,1669323607.6636,11.4419,10,False
+100000_single_user_./queries/query_1.q,5,1669323607.6956,1669323610.7581,3.0625,3669,False
+100000_single_user_./queries/query_5.q,6,1669323610.8079,1669323700.1488,89.3409,10,False
