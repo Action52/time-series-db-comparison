@@ -1,0 +1,7 @@
+from(bucket: "advdb")
+|> range(start: 2022-11-21T00:00:00.000Z, stop: 2022-11-22T00:00:00.000Z)
+|> filter(fn: (r) => r["_measurement"] == "findata")
+|> filter(fn: (r) => r._field == "TradeSize" or r._field == "Id")
+|> aggregateWindow(every: 1h, fn: sum)
+|> group(columns:  ["Id"])
+|> yield(name: "Query 4")

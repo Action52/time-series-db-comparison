@@ -1,0 +1,21 @@
+
+lastAskPrice = from(bucket: "advdb")
+  |> range(start: 2021-11-18T00:00:00.000Z, stop: now())
+  |> filter(fn: (r) => r["_measurement"] == "findata")
+  |> filter(fn: (r) => (r["_field"] == "AskPrice" and exists r._value))
+  |> group(columns: ["Id"])
+  |> last()
+
+lastBidPrice = from(bucket: "advdb")
+  |> range(start: 2021-11-18T00:00:00.000Z, stop: now())
+  |> filter(fn: (r) => r["_measurement"] == "findata")
+  |> filter(fn: (r) => (r["_field"] == "BidPrice" and exists r._value))
+  |> group(columns: ["Id"])
+  |> last()
+
+union(tables: [lastAskPrice, lastBidPrice])
+|> pivot(rowKey: ["Id"], columnKey: ["_field"], valueColumn: "_value")
+|> map(fn: (r) => ({r with _value: ( 2.0 * ( r.AskPrice - r.BidPrice ) / ( r.AskPrice + r.BidPrice ) )}))
+|> group()
+|> top(n: 10, columns: ["_value"])
+|> yield()
