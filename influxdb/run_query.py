@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import wait
 from argparse import ArgumentParser
 from influxdb_client import InfluxDBClient
+from influxdb_client.client.write_api import SYNCHRONOUS
 
 # Influx config
 org = 'ulb'
@@ -52,8 +53,8 @@ def create_database(tick_db_path):
         client.delete_api().delete(start, stop, '_measurement="findata"', bucket='advdb', org='ulb')
         data = read_file_data(tick_db_path)
         
-        with client.write_api(batch_size=10000, flush_interval=10_000) as write_client:
-            write_client.write("advdb", data)
+        with client.write_api(batch_size=10000, write_options=SYNCHRONOUS) as write_client:
+            write_client.write("advdb", "ulb", data, write_precision="ns")
             
 
 def read_file_data(tick_db_path):
@@ -100,26 +101,19 @@ def load_queries(path_to_queries):
 def run_query(client, run_id, query_number, queries, 
                 path_to_save_results, data_size, save_result=True,
                 query_id=""):
-    logging.debug(f"Running query {query_number} for scale factor {data_size}, saving results at {path_to_save_results}")
+    print(f"Running query {query_id} for scale factor {data_size}, saving results at {path_to_save_results}")
     try:
         start = time.time()
         res = client.query_api().query(queries[query_id])
         end = time.time()
         
         df = pd.read_json(res.to_json())
-        try:
-            str_df = df.select_dtypes([object])
-            str_df = str_df.stack().str.decode('utf-8').unstack()
-            for col in str_df:
-                df[col] = str_df[col]
-        except Exception as e:
-            logging.debug(e)
-            
         count = df.shape[0]
         df = df.round(4)
         
         if save_result:
-            df.to_csv(f"{path_to_save_results}/result_Q{query_id}_{data_size}.csv", index=False)
+            q_id = query_id.replace("./", "_").replace("/", "_")
+            df.to_csv(f"{path_to_save_results}/result_Q{q_id}_{data_size}.csv", index=False)
         stats = {
             "run_id": f"{run_id}_{query_id}",
             "query_id": query_number,
@@ -155,8 +149,8 @@ def run_queries_iter(run_id, queries, path_to_save_results, data_size, save_resu
             i+=1
         return pd.DataFrame.from_dict(stats).round(4)
 
-
 def run_queries_multi_user(run_id, queries, path_to_save_results, path_to_save_stats, data_size, args=None, query_id=""):
+    print("Running multi user on {}".format(query_id))
     answers = []
     with ThreadPoolExecutor(args.users_emulate) as executor:
         futures = [
@@ -181,10 +175,9 @@ def run(data_sizes, args):
     for i, data_size in enumerate(data_sizes):
         queries_path = args.queries_folder_path
         stats_path = f"{args.results_folder_path}/run_stats_size_{data_size}.csv"
+        
         start_create_db = time.time()
-
         # Create metastore for the given size
-        create_database(args.file_path)
         end_create_db = time.time()
 
         # Load queries for the given size
