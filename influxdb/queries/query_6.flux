@@ -1,13 +1,13 @@
 
 lastAskPrice = from(bucket: "advdb")
-  |> range(start: 2021-11-18T00:00:00.000Z, stop: now())
+  |> range(start: 2021-11-21T00:00:00.000Z, stop: now())
   |> filter(fn: (r) => r["_measurement"] == "findata")
   |> filter(fn: (r) => (r["_field"] == "AskPrice" and exists r._value))
   |> group(columns: ["Id"])
   |> last()
 
 lastBidPrice = from(bucket: "advdb")
-  |> range(start: 2021-11-18T00:00:00.000Z, stop: now())
+  |> range(start: 2021-11-21T00:00:00.000Z, stop: now())
   |> filter(fn: (r) => r["_measurement"] == "findata")
   |> filter(fn: (r) => (r["_field"] == "BidPrice" and exists r._value))
   |> group(columns: ["Id"])

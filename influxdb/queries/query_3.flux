@@ -2,7 +2,7 @@ import "join"
 import "experimental"
 
 yesteday = from(bucket: "advdb")
-|> range(start: 2022-11-17T00:00:00.000Z, stop: 2022-11-17T23:59:59.999Z)
+|> range(start: 2022-11-21T00:00:00.000Z, stop: 2022-11-21T23:59:59.999Z)
 |> filter(fn: (r) => r._measurement == "findata")
 |> filter(fn: (r) => r._field == "Id" or r._field == "TradePrice")
 |> group(columns: ["Id"])
