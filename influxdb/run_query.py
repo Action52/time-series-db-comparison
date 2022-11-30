@@ -162,7 +162,7 @@ def run_queries_multi_user(run_id, queries, path_to_save_results, path_to_save_s
         futures = [
             executor.submit(
                 run_queries_iter, f"{run_id}_{query_id}", queries, path_to_save_results, data_size,
-                False
+                True
             )
             for i in range(args.users_emulate)
         ]
@@ -191,7 +191,7 @@ def run(data_sizes, args):
         queries = load_queries(queries_path)
         # Run once as single user to get response time metric
         start_run = time.time()
-        stats_ind = run_queries_iter(f"{data_size}_single_user", queries, args.results_folder_path, data_size, save_result=False)
+        stats_ind = run_queries_iter(f"{data_size}_single_user", queries, args.results_folder_path, data_size, True)
         end_run = time.time()
         response_t_single = end_run - start_run
         save_list_results(stats_path, stats_ind)

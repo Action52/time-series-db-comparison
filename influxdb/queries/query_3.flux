@@ -9,7 +9,7 @@ yesteday = from(bucket: "advdb")
 |> last()
 
 today = from(bucket: "advdb")
-|> range(start: 2022-11-18T00:00:00.000Z, stop: 2022-11-19T23:59:59.999Z)
+|> range(start: 2022-11-22T00:00:00.000Z, stop: 2022-11-22T23:59:59.999Z)
 |> filter(fn: (r) => r._measurement == "findata")
 |> filter(fn: (r) => r._field == "Id" or r._field == "TradePrice")
 |> group(columns: ["Id"])
