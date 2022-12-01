@@ -21,5 +21,5 @@ fn: (r, accumulator) => ({
         Volume: r.sum2/r.sum1,
     }),)
 |> group(columns: ["Id"], mode:"by")
-|> limit(n:2)
+|> limit(n:1)
 |> yield()
