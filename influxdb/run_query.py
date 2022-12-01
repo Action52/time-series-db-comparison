@@ -15,7 +15,7 @@ org = 'ulb'
 token = '9ohN0dz-g1lH-d1emYInZjBqq0L2R5MJzRSWZ_9ezo5-U2N384Yjy5m7DNOdILieglyCYkpQWoOw5R4_FHzJlg=='
 host = 'http://localhost:8086'
 bucket = 'advdb'
-timeout = 60000 # set to 1 minutes
+timeout = 240000 # set to 1 minutes
 
 # Delete var
 start = "2022-01-01T00:00:00Z"
