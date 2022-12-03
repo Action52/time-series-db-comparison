@@ -1,5 +1,12 @@
 # Findata Influx DB
 
+## Install Influx
+
+Follow https://docs.influxdata.com/influxdb/v2.5/install/ for influx <b>2.5</b> installation
+
+## Install Influx CLI
+Install Influx CLI: https://docs.influxdata.com/influxdb/cloud/tools/influx-cli/
+
 ## Setup The Database
 Please put organization as `ulb` when creating your ULB account.
 
@@ -80,6 +87,7 @@ python run_query.py -s {scale_factor} -f {data_path} -q ./queries/ -r ./results/
 
 - `{token}` can be replaced with your own influxdb token
 - `{data_path}` can be replaced with the path of the chronograf file from etl script
+- `{scale_factor}` for specifying the scale factor
 
 In case you manually imported the data please run this script instead
 
