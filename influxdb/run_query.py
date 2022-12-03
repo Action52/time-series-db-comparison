@@ -12,7 +12,6 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 
 # Influx config
 org = 'ulb'
-token = '9ohN0dz-g1lH-d1emYInZjBqq0L2R5MJzRSWZ_9ezo5-U2N384Yjy5m7DNOdILieglyCYkpQWoOw5R4_FHzJlg=='
 host = 'http://localhost:8086'
 bucket = 'advdb'
 timeout = 240000 # set to 1 minutes
@@ -26,8 +25,7 @@ def parse_args():
     parser = ArgumentParser()
     parser.add_argument("--scale-factor", "-s", choices=[1000, 10000, 100000], default=1000, type=int,
                         help="Scale factor to select, between 1000, 10000, or 100000 securities.")
-    parser.add_argument("--file-path", "-f", required=True,
-                        help="Full path to the ticks file to run the benchmark.")
+    parser.add_argument("--file-path", "-f", default="./data/chronograf_1.txt", help="Full path to the ticks file to run the benchmark.")
     parser.add_argument("--queries-folder-path", "-q", default="./queries/",
                         help="Full path to the folder where the kdb queries are located.")
     parser.add_argument("--results-folder-path", "-r", required=True,
@@ -37,6 +35,7 @@ def parse_args():
     parser.add_argument("--users-emulate", "-u", default=3, choices=[3, 5, 10], type=int)
     parser.add_argument("--logging-level", "-l", default="INFO")
     parser.add_argument("--display-results", "-d", action="store_true", default=False)
+    parser.add_argument("--token", "-t", required=True)
     args = parser.parse_args()
     return args
 
@@ -48,7 +47,7 @@ def close_connection(client):
     client.close()
 
 
-def create_database(tick_db_path):
+def create_database(tick_db_path, token):
     with InfluxDBClient(url=host, token=token, org=org, timeout=timeout) as client:
         client.delete_api().delete(start, stop, '_measurement="findata"', bucket='advdb', org='ulb')
         data = read_file_data(tick_db_path)
@@ -138,7 +137,7 @@ def run_query(client, run_id, query_number, queries,
             "error": True
         }
   
-def run_queries_iter(run_id, queries, path_to_save_results, data_size, save_result=True):
+def run_queries_iter(token, run_id, queries, path_to_save_results, data_size, save_result=True):
     with InfluxDBClient(url=host, token=token, org=org, timeout=timeout) as client: 
         stats = []
         i = 0
@@ -149,13 +148,13 @@ def run_queries_iter(run_id, queries, path_to_save_results, data_size, save_resu
             i+=1
         return pd.DataFrame.from_dict(stats).round(4)
 
-def run_queries_multi_user(run_id, queries, path_to_save_results, path_to_save_stats, data_size, args=None, query_id=""):
+def run_queries_multi_user(token, run_id, queries, path_to_save_results, path_to_save_stats, data_size, args=None, query_id=""):
     print("Running multi user on {}".format(query_id))
     answers = []
     with ThreadPoolExecutor(args.users_emulate) as executor:
         futures = [
             executor.submit(
-                run_queries_iter, f"{run_id}_{query_id}", queries, path_to_save_results, data_size,
+                run_queries_iter, token, f"{run_id}_{query_id}", queries, path_to_save_results, data_size,
                 True
             )
             for i in range(args.users_emulate)
@@ -175,16 +174,17 @@ def run(data_sizes, args):
     for i, data_size in enumerate(data_sizes):
         queries_path = args.queries_folder_path
         stats_path = f"{args.results_folder_path}/run_stats_size_{data_size}.csv"
+        token = args.token
         
         start_create_db = time.time()
-        # Create metastore for the given size
+        # create_database(args.file_path, token)
         end_create_db = time.time()
 
         # Load queries for the given size
         queries = load_queries(queries_path)
         # Run once as single user to get response time metric
         start_run = time.time()
-        stats_ind = run_queries_iter(f"{data_size}_single_user", queries, args.results_folder_path, data_size, True)
+        stats_ind = run_queries_iter(token, f"{data_size}_single_user", queries, args.results_folder_path, data_size, True)
         end_run = time.time()
         response_t_single = end_run - start_run
         save_list_results(stats_path, stats_ind)
@@ -193,7 +193,7 @@ def run(data_sizes, args):
 
         # Run a second time emulating a multi-user system to get throughput
         start_run = time.time()
-        throughput = run_queries_multi_user(f"{data_size}_multi_user", queries, args.results_folder_path, stats_path, data_size,
+        throughput = run_queries_multi_user(token, f"{data_size}_multi_user", queries, args.results_folder_path, stats_path, data_size,
                                args=args)
         end_run = time.time()
 

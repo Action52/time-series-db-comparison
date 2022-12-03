@@ -1,2 +1,2 @@
 batch_id,create_db_time,run_query_time_single,response_time_metric_multi,thorughput_metric,cost_metric
-1,0.0,65.8057,53.6621,30.1342,16.1707
+1,0.0,66.508,55.8144,30.5874,17.0722

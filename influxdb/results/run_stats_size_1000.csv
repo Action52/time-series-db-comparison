@@ -1,7 +1,7 @@
 run_id,query_id,start_time,end_time,elapsed_time,row_count,error
-1000_single_user_./queries/query_3.flux,1,1669883199.8981,1669883203.3077,3.4096,10,False
-1000_single_user_./queries/query_5.flux,2,1669883203.3198,1669883203.3198,0.0,0,True
-1000_single_user_./queries/query_6.flux,3,1669883203.3198,1669883219.8378,16.5179,10,False
-1000_single_user_./queries/query_2.flux,4,1669883219.8468,1669883236.1719,16.3251,1000,False
-1000_single_user_./queries/query_1.flux,5,1669883236.1951,1669883240.5882,4.3931,18764,False
-1000_single_user_./queries/query_4.flux,6,1669883241.1689,1669883244.6049,3.436,10,False
+1000_single_user_./queries/query_3.flux,1,1670088514.0778,1670088518.2793,4.2016,10,False
+1000_single_user_./queries/query_5.flux,2,1670088518.2937,1670088523.5143,5.2205,18148,False
+1000_single_user_./queries/query_6.flux,3,1670088524.0686,1670088542.2391,18.1705,10,False
+1000_single_user_./queries/query_2.flux,4,1670088542.2494,1670088560.2629,18.0135,1000,False
+1000_single_user_./queries/query_1.flux,5,1670088560.2932,1670088565.2344,4.9413,18764,False
+1000_single_user_./queries/query_4.flux,6,1670088565.768,1670088569.876,4.108,10,False
