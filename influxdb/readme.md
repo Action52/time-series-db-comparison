@@ -38,7 +38,7 @@ Use this method in case creating database method is not working from the script.
 
 <b>Deleting bucket:</b>
 
-This step is for deleting previous data in case you have working database or have loaded  data before. Please login into http://localhost:8086the
+This step is for deleting previous data in case you have working database or have loaded  data before. Please login into http://localhost:8086
 
 ![Bucket](./image/buckets.png "Bucket")
 
