@@ -10,6 +10,13 @@ Install Influx CLI: https://docs.influxdata.com/influxdb/cloud/tools/influx-cli/
 ## Setup The Database
 Please put organization as `ulb` when creating your ULB account.
 
+<b> Reassign Retention Policy:</b>
+
+Open your terminal and run this script
+```sh
+influx v1 dbrp create --db advdb --rp autogen --bucket-id {bucket_id} --org ulb --token {token} --default
+```
+
 ## Loading the Data
 
 ### Generate the data
