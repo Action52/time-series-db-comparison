@@ -19,6 +19,8 @@ Open `etl.ipynb` file, replace `FILE` and `BASE_FILE` with the `tick_price_file`
 <b>Important Note: You have to rerun this steps everytime you want to reload and change the scale factor</b>
 
 ### Getting Token
+https://docs.influxdata.com/influxdb/cloud/security/tokens/create-token/
+
 This steps is to acquiring token for running the script from influxdb
 
 Login to http://localhost:8086
