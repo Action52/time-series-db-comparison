@@ -1,0 +1,7 @@
+run_id,query_id,start_time,end_time,elapsed_time,row_count,error
+100000_single_user_./queries/query_2.flux,1,1670601591.5333,1670601591.5333,0.0,0,True
+100000_single_user_./queries/query_3.flux,2,1670602193.4312,1670602193.4312,0.0,0,True
+100000_single_user_./queries/query_4.flux,3,1670602794.5827,1670602794.5827,0.0,0,True
+100000_single_user_./queries/query_5.flux,4,1670603395.1259,1670603395.1259,0.0,0,True
+100000_single_user_./queries/query_6.flux,5,1670603995.4499,1670603995.4499,0.0,0,True
+100000_single_user_./queries/query_1.flux,6,1670604596.0167,1670604596.0179,0.0,0,True
