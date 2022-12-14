@@ -1,7 +1,0 @@
-run_id,query_id,start_time,end_time,elapsed_time,row_count,error
-10000_single_user_./queries/query_2.flux,1,1670334559.2019,1670334559.2019,0.0,0,True
-10000_single_user_./queries/query_3.flux,2,1670334559.2032,1670334716.2535,157.0504,10,False
-10000_single_user_./queries/query_4.flux,3,1670334716.685,1670334857.8613,141.1763,10,False
-10000_single_user_./queries/query_5.flux,4,1670334858.0265,1670335063.1797,205.1532,143156,False
-10000_single_user_./queries/query_6.flux,5,1670335311.0874,1670335311.0874,0.0,0,True
-10000_single_user_./queries/query_1.flux,6,1670335311.0975,1670335514.6674,203.5699,164220,False
